@@ -760,15 +760,22 @@ Cursor* table_find(Table* table, uint32_t key) {
   }
 }
 
-// bug
+// Return the leftmost LEAF node
 Cursor* table_start(Table* table) {
-  Cursor* cursor = table_find(table, table->root_page_num);
+  /*
+  this sentence is to find the leftmost leaf node.
+  the table_find algorithm is to find the key that is equal to or closest to the target key,
+  so setting the target key to 0 can find the smallest key in the tree, which is also the leftmost key.
+  */  
+  Cursor* cursor = table_find(table, 0);
+
   void* node = get_page(table->pager, cursor->page_num);
   uint32_t num_cells = *leaf_node_num_cells(node);
   cursor->end_of_table = (num_cells == 0);
   return cursor;
 }
 
+// Only leaf nodes can be traversed
 void* cursor_value(Cursor* cursor) {
   uint32_t page_num = cursor->page_num;
   void* node = get_page(cursor->table->pager, page_num);
@@ -920,7 +927,6 @@ PrepareResult prepare_statement(InputBuffer* input_buffer, Statement* statement)
   return PREPARE_UNRECOGNIZED_STATEMENT;
 }
 
-// bug
 ExecuteResult execute_insert(Statement* statement, Table* table) {
   void* node = get_page(table->pager, table->root_page_num);
   uint32_t num_cells = *leaf_node_num_cells(node);
