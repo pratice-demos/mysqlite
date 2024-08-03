@@ -1,2 +1,4 @@
-build
 Gemfile.lock
+.vscode
+mysqlite
+test.db
