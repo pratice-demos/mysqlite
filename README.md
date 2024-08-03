@@ -4,22 +4,20 @@ code is copied from this tutorial: [Let's Build a Simple Database](https://cstac
 
 ### usage
 
-compile to get the executable program (cmake)
+compile
 
 ```bash
-cd build
-cmake ..
-make
+make build
 ```
 
-use it
+run
 
 ```bash
-./mysqlite ./test.db
+make run
 ```
 
-run e2e test (rspec)
+e2e test
 
 ```bash
-bundle exec rspec
+make test
 ```
